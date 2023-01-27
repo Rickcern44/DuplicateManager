@@ -11,9 +11,23 @@ public static class DistanceCalculator
         return score;
     }
 
-    public static decimal? BreakoutStringCompare(string inpuString, string listItemSpring)
+    public static decimal BreakoutStringCompare(string inpuString, string listItemString)
     {
-        decimal? score = 0;
+        decimal score = 0;
+        string[] inputArray = inpuString.Split(" ");
+        string[] listItemArray = listItemString.Split(" ");
+        List<decimal> distanceScores = null;
+
+        for (int i = 0; i < inputArray.Length; i++)
+        {
+            for (int j = 0; j < listItemArray.Length; j++)
+            {
+                distanceScores?.Add(EntireStringCompare(inputString: inputArray[i], listItemString: listItemArray[j]));
+            }
+        }
+
+        score = distanceScores.AsQueryable().Average();
+        
         return score;
     }
 
