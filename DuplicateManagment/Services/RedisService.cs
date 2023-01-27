@@ -1,47 +1,38 @@
-using System.Text.Json;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace DuplicateManagment.Services;
 
 public class RedisService : ICacheService
 {
-    private ConnectionMultiplexer? _redis;
+    private readonly ConnectionMultiplexer? _redis = ConnectionMultiplexer.Connect("192.168.1.79:6379");
+    private readonly IDatabase _database;
 
     public RedisService()
     {
-        ConnectionProperties();
+        _database = _redis.GetDatabase();
     }
-    
-    public async Task<bool> CacheList(IEnumerable<object> cacheItem)
-    {
-        var db = _redis?.GetDatabase();
 
-        RedisKey key = new RedisKey("List");
-        RedisValue value = new RedisValue(GetJsonString(cacheItem));
-        
-        return await db.SetAddAsync(key, value);
-    }
-    public async Task<RedisValue?> GetRedisCache(string cacheKey)
+    public string? GetValue_Test()
     {
-        RedisValue? cachedItems = new RedisValue(); 
-        RedisKey key = new RedisKey(cacheKey);
-        var db = _redis?.GetDatabase();
-        if (db is not null)
-        {
-        }
+        return _database.StringGet("TestKey");
+    }
 
-        return cachedItems;
-    }
-    private void ConnectionProperties()
+    public bool SetValue_Test()
     {
-        _redis = ConnectionMultiplexer.Connect(
-            new ConfigurationOptions()
-            {
-                EndPoints = { "127.0.0.1:6379"},
-            });
+        return _database.StringSet("TestKey", "Hello World");
     }
-    private string GetJsonString(object inputString)
+
+    public bool CacheInputList(IEnumerable<object> list)
     {
-        return JsonSerializer.Serialize((inputString));
+        return _database.StringSet("LeadList",JsonConvert.SerializeObject(list));
+    }
+
+    public IEnumerable<object>? GetInputList()
+    {
+        var leads =  _database.StringGet("LeadList");
+        var deserializeLeads = JsonConvert.DeserializeObject<List<object>>(leads);
+
+        return deserializeLeads;
     }
 }

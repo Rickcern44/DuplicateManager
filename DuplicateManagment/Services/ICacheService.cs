@@ -4,6 +4,8 @@ namespace DuplicateManagment.Services;
 
 public interface ICacheService
 {
-    Task<bool> CacheList(IEnumerable<object> cacheItem);
-    Task<RedisValue?> GetRedisCache(string cacheKey);
+    public string? GetValue_Test();
+    public bool SetValue_Test();
+    public bool CacheInputList(IEnumerable<object> list);
+    public IEnumerable<object>? GetInputList();
 }
