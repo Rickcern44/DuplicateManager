@@ -1,7 +1,8 @@
+using DuplicateManagement.Models;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace DuplicateManagment.Services;
+namespace DuplicateManagement.Services;
 
 public class RedisService : ICacheService
 {
@@ -25,14 +26,30 @@ public class RedisService : ICacheService
 
     public bool CacheInputList(IEnumerable<object> list)
     {
-        return _database.StringSet("LeadList",JsonConvert.SerializeObject(list));
+        return _database.StringSet("LeadList", JsonConvert.SerializeObject(list));
     }
 
     public IEnumerable<object>? GetInputList()
     {
-        var leads =  _database.StringGet("LeadList");
+        var leads = _database.StringGet("LeadList");
         var deserializeLeads = JsonConvert.DeserializeObject<List<object>>(leads);
 
         return deserializeLeads;
+    }
+    public bool SetConfigurationSettings(Configuration config)
+    {
+        return _database.StringSet(key: "Config", value:JsonConvert.SerializeObject(config));
+    }
+    public Configuration? GetConfigurationSettings()
+    {
+        var configSettings = _database.StringGet("Config ");
+        Configuration? config = null;
+
+        if (configSettings.HasValue)
+        {
+            config = JsonConvert.DeserializeObject<Configuration>(configSettings);
+        }
+
+        return config;
     }
 }

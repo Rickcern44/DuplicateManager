@@ -1,34 +1,30 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace DuplicateManagment.ComparisonHelpers;
+namespace DuplicateManagement.ComparisonHelpers;
 
 public static class DistanceCalculator
 {
-    public static decimal EntireStringCompare(string inputString, string listItemString )
+    public static decimal CompareFullString(string inputString, string listItemString)
     {
         decimal score = 0;
         score = GetStringDistance(inputString, listItemString);
         return score;
     }
 
-    public static decimal BreakoutStringCompare(string inpuString, string listItemString)
+    public static decimal CompareIndividualStringComponents(string inpuString, string listItemString)
     {
         decimal score = 0;
         string[] inputArray = inpuString.Split(" ");
         string[] listItemArray = listItemString.Split(" ");
-        List<decimal> distanceScores = null;
 
-        for (int i = 0; i < inputArray.Length; i++)
-        {
-            for (int j = 0; j < listItemArray.Length; j++)
-            {
-                distanceScores?.Add(EntireStringCompare(inputString: inputArray[i], listItemString: listItemArray[j]));
-            }
-        }
+        var combinedArray = inputArray.Zip(listItemArray);
+        
+        //Compare the first and second string an add the score to list to be averaged
+        var distanceScores = combinedArray.Select(item => CompareFullString(item.First, item.Second)).ToList();
 
         score = distanceScores.AsQueryable().Average();
         
-        return score;
+        return Math.Round(score, 2);
     }
 
     public static decimal ConvertToPercentage(decimal? currentScore)
@@ -76,6 +72,6 @@ public static class DistanceCalculator
             }
         }
 
-        return (decimal)matrix[bounds.Height - 1, bounds.Width - 1];
+        return matrix[bounds.Height - 1, bounds.Width - 1];
     }
 }

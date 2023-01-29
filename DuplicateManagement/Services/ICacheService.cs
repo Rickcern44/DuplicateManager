@@ -1,6 +1,7 @@
+using DuplicateManagement.Models;
 using StackExchange.Redis;
 
-namespace DuplicateManagment.Services;
+namespace DuplicateManagement.Services;
 
 public interface ICacheService
 {
@@ -8,4 +9,6 @@ public interface ICacheService
     public bool SetValue_Test();
     public bool CacheInputList(IEnumerable<object> list);
     public IEnumerable<object>? GetInputList();
+    public Configuration? GetConfigurationSettings();
+    public bool SetConfigurationSettings(Configuration config);
 }

@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DuplicateManagment\DuplicateManagment.csproj" />
+      <ProjectReference Include="..\DuplicateManagement\DuplicateManagement.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
-using DuplicateManagment;
-using DuplicateManagment.Services;
-using DuplicateManagment.Test.TestModels;
+using DuplicateManagement.Models;
+using DuplicateManagement.Services;
+using DuplicateManagement.Test.TestModels;
+using FluentAssertions;
 
 namespace DuplicateManagement.Test.CachingTests;
 
@@ -43,6 +44,22 @@ public class RedisCachingTests
     {
         var result = _cacheService.GetInputList()?.ToList();
         Assert.That(result?.Count > 0);
+    }
+    [Test]
+    public void CanCacheConfigSettings()
+    {
+        Configuration config = new Configuration(DateTime.Now, "zip, phone");
+        bool result = _cacheService.SetConfigurationSettings(config);
+
+        result.Should().BeTrue();
+    }
+    [Test]
+    public void CanGetConfigurationSettings()
+    {
+        Configuration? config = _cacheService.GetConfigurationSettings();
+        
+        config.Should().NotBeNull();
+        config.ComparisonKeys.Should().Contain("zip");
     }
     
 }

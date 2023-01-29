@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateManagment", "DuplicateManagment\DuplicateManagment.csproj", "{4EA02D65-BFAA-4E3E-8243-28F1491F7FC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateManagement", "DuplicateManagement\DuplicateManagement.csproj", "{4EA02D65-BFAA-4E3E-8243-28F1491F7FC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateManagement.Test", "DuplicateManagement.Test\DuplicateManagement.Test.csproj", "{F1E558E9-4AD1-4AED-95E4-83CBB1F98E7F}"
 EndProject
