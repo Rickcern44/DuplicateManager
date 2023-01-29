@@ -7,6 +7,7 @@ using FluentAssertions;
 
 namespace DuplicateManagement.Test.AttributeTests;
 [TestFixture]
+[ExcludeFromCodeCoverage]
 public class ComparisonAttributeTests
 {
     [Test]

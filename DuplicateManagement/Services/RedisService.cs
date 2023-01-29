@@ -13,17 +13,7 @@ public class RedisService : ICacheService
     {
         _database = _redis.GetDatabase();
     }
-
-    public string? GetValue_Test()
-    {
-        return _database.StringGet("TestKey");
-    }
-
-    public bool SetValue_Test()
-    {
-        return _database.StringSet("TestKey", "Hello World");
-    }
-
+    
     public bool CacheInputList(IEnumerable<object> list)
     {
         return _database.StringSet("LeadList", JsonConvert.SerializeObject(list));
@@ -38,18 +28,19 @@ public class RedisService : ICacheService
     }
     public bool SetConfigurationSettings(Configuration config)
     {
-        return _database.StringSet(key: "Config", value:JsonConvert.SerializeObject(config));
+        RedisKey configKey = new RedisKey("Config");
+        RedisValue configValue = new RedisValue(JsonConvert.SerializeObject(config));
+        
+        return _database.StringSet(key: configKey, value:configValue);
     }
     public Configuration? GetConfigurationSettings()
     {
-        var configSettings = _database.StringGet("Config ");
-        Configuration? config = null;
+        RedisKey configKey = new RedisKey("Config");
 
-        if (configSettings.HasValue)
-        {
-            config = JsonConvert.DeserializeObject<Configuration>(configSettings);
-        }
-
+        RedisValue? configSettings = _database.StringGet(configKey);
+        
+        var config = JsonConvert.DeserializeObject<Configuration>(configSettings.Value);
+        
         return config;
     }
 }

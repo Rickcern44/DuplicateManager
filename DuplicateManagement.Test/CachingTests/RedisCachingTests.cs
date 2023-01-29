@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DuplicateManagement.Models;
 using DuplicateManagement.Services;
 using DuplicateManagement.Test.TestModels;
@@ -5,6 +6,7 @@ using FluentAssertions;
 
 namespace DuplicateManagement.Test.CachingTests;
 
+[ExcludeFromCodeCoverage]
 public class RedisCachingTests
 {
     private List<Lead> saveList = new()
@@ -18,20 +20,7 @@ public class RedisCachingTests
     public void Setup()
     {
     }
-
-    [Test]
-    public void CanStoreHelloWorld()
-    {
-        var result = _cacheService.SetValue_Test();
-        Assert.IsTrue(result);
-    }
-    [Test]
-    public void CanRetrieveHelloWorld()
-    {
-        var result = _cacheService.GetValue_Test();
-        Assert.That(result, Is.EqualTo("Hello World"));
-    }
-
+    
     [Test]
     public void CanCacheInputList()
     {
@@ -48,7 +37,7 @@ public class RedisCachingTests
     [Test]
     public void CanCacheConfigSettings()
     {
-        Configuration config = new Configuration(DateTime.Now, "zip, phone");
+        Configuration config = new Configuration(DateTime.Now, "zip","phone");
         bool result = _cacheService.SetConfigurationSettings(config);
 
         result.Should().BeTrue();
@@ -57,7 +46,7 @@ public class RedisCachingTests
     public void CanGetConfigurationSettings()
     {
         Configuration? config = _cacheService.GetConfigurationSettings();
-        
+
         config.Should().NotBeNull();
         config.ComparisonKeys.Should().Contain("zip");
     }
